@@ -102,3 +102,30 @@ ax2.set_title('Undistorted Image', fontsize=30)
 
 ![png](./readme_img/output_4_1.png)
 
+## Focal length from calibration parameters
+Q: 
+  I am trying to calibrate my camera (sony alpha 6000 20mm lens) using open CV. In the parameters list, I can find the focal length coefficient as 5192. How can I calculate the corresponding focal length from that ?
+
+A:
+You already know the focal lengths is 20mm, but you might want to compare/check calibration results.
+
+In camera matrix the focal lengths `fx`,`fy` are expressed in pixel units. To convert focals in World units Fx, Fy you need sensor size in same units using similar triangle
+```
+Fx = fx * W /w 
+```
+or 
+```
+Fy = fy * H /h
+```
+where:
+W: is the sensor width expressed in world units, let's say mm
+w: is the image width expressed in pixel
+fx: is the focal length expressed in pixel units (as is in the camera matrix )
+Your Sony α6000 is 6000x4000pix and sensor size is 23.5 x 15.6mm hence:
+```
+Fx = fx * W /w = 5192pix * 23.5mm / 6000pix = 20.33mm
+Fy = fy * H /h =  5192pix * 15.6mm / 4000pix = 20.25m
+```
+At the end your calibration looks good
+
+> https://answers.opencv.org/question/139166/focal-length-from-calibration-parameters/
